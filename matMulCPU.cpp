@@ -1,6 +1,3 @@
-﻿// matMulCPU.cpp : Defines the entry point for the application.
-//
-
 #include "matMulCPU.h"
 #include<chrono>
 #include<iostream>
@@ -29,20 +26,41 @@ template<typename T, int MAT_SIZE>
 void benchTimes(T *A, T *B, T *C, int idx, int iters){
 	std::chrono::high_resolution_clock::time_point t0, t1;
 	std::chrono::duration< double > fs;
-	std::chrono::microseconds d; 
+	std::chrono::nanoseconds d; 
 	std::chrono::duration< double > totfs= static_cast<std::chrono::duration< double >>(0);
 	for(int i= 0; i< iters; ++i){
-		
 		switch(idx){
-			case 0: t0 = std::chrono::high_resolution_clock::now(); matMul1<float, MAT_SIZE>(A, B, C); t1 = std::chrono::high_resolution_clock::now(); break;
-			case 1: t0 = std::chrono::high_resolution_clock::now(); matMul2<float, MAT_SIZE>(A, B, C); t1 = std::chrono::high_resolution_clock::now(); break;
-			case 2: t0 = std::chrono::high_resolution_clock::now(); matMul4<float, MAT_SIZE>(A, B, C); t1 = std::chrono::high_resolution_clock::now(); break;
-			case 3: t0 = std::chrono::high_resolution_clock::now(); matMul5<float, MAT_SIZE, 64>(A, B, C); t1 = std::chrono::high_resolution_clock::now(); break; // 64 best aya
-			case 4: t0 = std::chrono::high_resolution_clock::now(); matMul6<float, MAT_SIZE, 64>(A, B, C, MAT_SIZE); t1 = std::chrono::high_resolution_clock::now(); break; // 64 best aya
-			case 5: t0 = std::chrono::high_resolution_clock::now(); matMul7<float, MAT_SIZE, 64>(A, B, C, MAT_SIZE); t1 = std::chrono::high_resolution_clock::now(); break; // 64 best aya
-			case 6: t0 = std::chrono::high_resolution_clock::now(); matMul641<MAT_SIZE>(A, B, C); t1 = std::chrono::high_resolution_clock::now(); break;
+			case 1: 
+				t0 = std::chrono::high_resolution_clock::now(); 
+				matMul1<float, MAT_SIZE>(A, B, C);               
+				t1 = std::chrono::high_resolution_clock::now(); 
+				break;
+			case 2: 
+				t0 = std::chrono::high_resolution_clock::now(); 
+				matMul2<float, MAT_SIZE>(A, B, C);               
+				t1 = std::chrono::high_resolution_clock::now(); 
+				break;
+			case 4: 
+				t0 = std::chrono::high_resolution_clock::now(); 
+				matMul4<float, MAT_SIZE>(A, B, C);               
+				t1 = std::chrono::high_resolution_clock::now(); 
+				break;
+			case 5: 
+				t0 = std::chrono::high_resolution_clock::now(); 
+				matMul5<float, MAT_SIZE, 64>(A, B, C);           
+				t1 = std::chrono::high_resolution_clock::now(); 
+				break; // 64 best aya
+			case 6: 
+				t0 = std::chrono::high_resolution_clock::now(); 
+				matMul6<float, MAT_SIZE, 64>(A, B, C, MAT_SIZE); 
+				t1 = std::chrono::high_resolution_clock::now(); 
+				break; // 64 best aya
+			case 8: 
+				t0 = std::chrono::high_resolution_clock::now(); 
+				matMul8<float, MAT_SIZE, 64>(A, B, C, MAT_SIZE); 
+				t1 = std::chrono::high_resolution_clock::now(); 
+				break; // 64 best aya
 		}
-		
 		fs = t1 - t0;
 		totfs+= fs;
 		// result checking
@@ -51,8 +69,8 @@ void benchTimes(T *A, T *B, T *C, int idx, int iters){
 	}
 	printf("\nRESULTS CORRECT. ");
 	totfs/= iters;
-	d = std::chrono::duration_cast<std::chrono::microseconds>(totfs);
-	std::cout << (d.count())/1000000.0 << "s";
+	d = std::chrono::duration_cast<std::chrono::nanoseconds>(totfs);
+	std::cout << (d.count())/1000000000.0 << "s";
 }
 
 int main(int argc, char *args[])
@@ -73,7 +91,7 @@ int main(int argc, char *args[])
 	std::chrono::milliseconds d = std::chrono::duration_cast<std::chrono::milliseconds>(fs);
 	printf("DONE. ");
 	std::cout << d.count() << "ms\n";
-
+	
 	benchTimes<float, MAT_SIZE>(A, B, C, bench_idx, 1); // matMul naive
 	return 0;
 
