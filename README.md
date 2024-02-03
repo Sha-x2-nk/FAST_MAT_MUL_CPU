@@ -20,16 +20,16 @@ Intel Core i7-12650H | WINDOWS 11 |
 | LVL8. HARD CODED AVX2 INTRINSICS | 0.522 seconds | 1.411x | 1777x |
 | numpy openBLAS | 0.25 seconds | - | - |
 
-ALL THE KERNELS ARE IN matMulCPU.h header file.
+All the kernels are in matMulCPU.h header file.
 
 
-THE FIRST 2 KERNELS WERE COMPILED WITH MSVC.
+the first 2 kernels were compiled with MSVC.
 
 
-I DID THIS AS HOBBBY PROJECT SO THE CODE LACKS PROPER BENCHMARKING. ALL THE TIMES MENTIONED HERE ARE THE MINIUM OF 2-3 CODE RUNNING ITERATIONS.  THE LVL 8 OPTIMISATION SHOULD WORK BETTER ON AVX512 SUPPORTED PROCESSORS (like 11th gen Intel Core)
+I did this as a hobby project so the code lacks peoper benchmarking. All the runtimes mentioned here are a minimum of 4-5 code running iterations. The LVL 8 optimisation should work better on AVX-512 supported processors. (like 11th gen Intel Core)
 
 
-THE CODE IS HEAVILY INSPIRED FROM <b>Charles Leiserson's</b> LECTURE ON MITOCW PERFORMANCE ENGINEERING. 
+The code is heavily inspired from <b>Charles Leiserson's</b> lecture on MIT OCW performance engineering. 
 
 
 ANY NEW BENCHMARKS/IMPROVEMENTS ARE WELCOME.
