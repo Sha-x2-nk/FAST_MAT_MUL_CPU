@@ -1,2 +1,28 @@
 # FAST_MAT_MUL_CPU
-Matrix multiplication implementation on CPU
+RAM RAM
+
+### BELOW ARE RESULTS SUMMARISED
+| KERNEL | RUNTIME | relative speedup | absolute speedup
+|--------|---------|--| -- |
+| LVL1. NAIVE MATMUL| 928 seconds | 1 | 1 |
+| LVL2. CACHE AWARE LOOP REARRANGEMENT | 113 seconds | 8.2x | 8.2x |
+| LVL3. COMPILER CHANGE TO ICPX & -O3 | 13.623 seconds | 8.29x | 68.12x |
+| LVL4. PARALLEL FOR LOOP USING TBB | 2.285 seconds | 5.96x | 406.1x |
+| LVL5. TILING | 1.583 seconds | 1.443x | 586.2x |
+| LVL6. PARALLEL RECURSION | 1.293 seconds | 1.2x | 717.7x |
+| LVL7. COMPILER FLAGS fastmath, arch=native | 0.737 seconds | 1.75x | 1259x |
+| LVL8. HARD CODED AVX2 INTRINSICS | 0.69 seconds | 1.07x | 1345x |
+
+ALL THE KERNELS ARE IN matMulCPU.h header file.
+
+
+THE FIRST 2 KERNELS WERE COMPILED WITH MSVC.
+
+
+I DID THIS AS HOBBBY PROJECT SO THE CODE LACKS PROPER BENCHMARKING. 
+
+
+THE CODE IS HEAVILY INSPIRED FROM <b>Charles Leiserson's</b> LECTURE ON MITOCW PERFORMANCE ENGINEERING. 
+
+
+ANY NEW BENCHMARKS/IMPROVEMENTS ARE WELCOME.
