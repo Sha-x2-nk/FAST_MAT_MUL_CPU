@@ -16,8 +16,8 @@ Intel Core i7-12650H | WINDOWS 11 |
 | LVL4. PARALLEL FOR LOOP USING TBB | 2.285 seconds | 5.96x | 406.1x |
 | LVL5. TILING | 1.583 seconds | 1.443x | 586.2x |
 | LVL6. PARALLEL RECURSION | 1.293 seconds | 1.2x | 717.7x |
-| LVL7. COMPILER FLAGS fastmath, arch=native | 0.737 seconds | 1.75x | 1259x |
-| LVL8. HARD CODED AVX2 INTRINSICS | 0.56 seconds | - slower | - slower |
+| LVL7. COMPILER FLAGS fastmath, arch=native | 0.52 seconds | 2.48x | 1785x |
+| LVL8. HARD CODED AVX2 INTRINSICS | 0.56 seconds |  slower |  slower |
 | numpy openBLAS | 0.25 seconds | - | - |
 
 All the kernels are in matMulCPU.h header file.
