@@ -29,7 +29,7 @@ the first 2 kernels were compiled with MSVC.
 I did this as a hobby project so the code lacks peoper benchmarking. All the runtimes mentioned here are a minimum of 4-5 code running iterations. The LVL 8 optimisation should work better on AVX-512 supported processors. (like 11th gen Intel Core)
 
 
-The code is heavily inspired from <b>Charles Leiserson's</b> lecture on MIT OCW performance engineering. 
+The code is heavily inspired from <b><u>Charles Leiserson's</u></b> lecture on MIT OCW performance engineering. 
 
 
 ANY NEW BENCHMARKS/IMPROVEMENTS ARE WELCOME.
