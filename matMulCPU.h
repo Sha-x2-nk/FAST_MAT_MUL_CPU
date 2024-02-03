@@ -1,4 +1,4 @@
-﻿// matMulCPU.h : Include file for standard system include files,
+// matMulCPU.h : Include file for standard system include files,
 // or project specific include files.
 
 #pragma once
@@ -106,14 +106,13 @@ inline void matMul5(T *A, T *B, T *C){
 template< typename T, int MAT_SIZE, int THRESHOLD>
 inline void matMul6(T *A, T *B, T *C, int N){
 	if(N<= THRESHOLD){
-		for (int m = 0; m < N; ++m) {
-			for (int k = 0; k < N; ++k) {
-				for (int n = 0; n < N; ++n) {
+		for (int m = 0; m < THRESHOLD; ++m) {
+			for (int k = 0; k < THRESHOLD; ++k) {
+				for (int n = 0; n < THRESHOLD; ++n) {
 					at(C, m, n) += at(A, m, k) * at(B, k, n);
 				}
 			}
 		}
-		
 	}
 	else{
 		oneapi::tbb::task_group grp;
@@ -148,7 +147,7 @@ inline void matMul6(T *A, T *B, T *C, int N){
 }
 
 template< typename T, int MAT_SIZE, int THRESHOLD>
-inline void matMul7(T *A, T *B, T *C, int N){
+inline void matMul8(T *A, T *B, T *C, int N){
 	if(N== THRESHOLD){
 		for (int m = 0; m < THRESHOLD; ++m) {
 			for (int k = 0; k < THRESHOLD; ++k) {
@@ -171,31 +170,32 @@ inline void matMul7(T *A, T *B, T *C, int N){
 	else{
 		oneapi::tbb::task_group grp;
 		grp.run([&](){ 
-			matMul6<T, MAT_SIZE, THRESHOLD>(infer(A, 0, 0), infer(B, 0, 0), infer(C, 0, 0), N/2);
+			matMul8<T, MAT_SIZE, THRESHOLD>(infer(A, 0, 0), infer(B, 0, 0), infer(C, 0, 0), N/2);
 		});
 		grp.run([&](){ 
-			matMul6<T, MAT_SIZE, THRESHOLD>(infer(A, 0, 0), infer(B, 0, 1), infer(C, 0, 1), N/2);
+			matMul8<T, MAT_SIZE, THRESHOLD>(infer(A, 0, 0), infer(B, 0, 1), infer(C, 0, 1), N/2);
 		});
 		grp.run([&](){
-			matMul6<T, MAT_SIZE, THRESHOLD>(infer(A, 1, 0), infer(B, 0, 0), infer(C, 1, 0), N/2);
+			matMul8<T, MAT_SIZE, THRESHOLD>(infer(A, 1, 0), infer(B, 0, 0), infer(C, 1, 0), N/2);
 		});
 			// ise parallise nhi kia. is thread me bhi to kuchh chale. basic optimisation
-			matMul6<T, MAT_SIZE, THRESHOLD>(infer(A, 1, 0), infer(B, 0, 1), infer(C, 1, 1), N/2);
+			matMul8<T, MAT_SIZE, THRESHOLD>(infer(A, 1, 0), infer(B, 0, 1), infer(C, 1, 1), N/2);
 		
 		grp.wait();
 
 		grp.run([&](){ 
-			matMul6<T, MAT_SIZE, THRESHOLD>(infer(A, 0, 1), infer(B, 1, 0), infer(C, 0, 0), N/2);
+			matMul8<T, MAT_SIZE, THRESHOLD>(infer(A, 0, 1), infer(B, 1, 0), infer(C, 0, 0), N/2);
 		});
 		grp.run([&](){ 
-			matMul6<T, MAT_SIZE, THRESHOLD>(infer(A, 0, 1), infer(B, 1, 1), infer(C, 0, 1), N/2);
+			matMul8<T, MAT_SIZE, THRESHOLD>(infer(A, 0, 1), infer(B, 1, 1), infer(C, 0, 1), N/2);
 		});
 		grp.run([&](){ 
-			matMul6<T, MAT_SIZE, THRESHOLD>(infer(A, 1, 1), infer(B, 1, 0), infer(C, 1, 0), N/2);
+			matMul8<T, MAT_SIZE, THRESHOLD>(infer(A, 1, 1), infer(B, 1, 0), infer(C, 1, 0), N/2);
 		});
 			// ise parallise nhi kia. is thread me bhi to kuchh chale. basic optimisation
-			matMul6<T, MAT_SIZE, THRESHOLD>(infer(A, 1, 1), infer(B, 1, 1), infer(C, 1, 1), N/2);
+			matMul8<T, MAT_SIZE, THRESHOLD>(infer(A, 1, 1), infer(B, 1, 1), infer(C, 1, 1), N/2);
 
 		grp.wait();
 	}	
 }
+
