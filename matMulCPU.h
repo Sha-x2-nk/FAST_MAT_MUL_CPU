@@ -152,16 +152,25 @@ inline void matMul8(T *A, T *B, T *C, int N){
 		for (int m = 0; m < THRESHOLD; ++m) {
 			for (int k = 0; k < THRESHOLD; ++k) {
 				__m256 a_vec= _mm256_broadcast_ss(&at(A, m, k)); // ss-> single precision floating point. mm-> multimedia extension. broadcast-> pure register m same value bhar de
-				for (int n = 0; n < THRESHOLD; n+= 8) {
+				for (int n = 0; n < THRESHOLD; n+= 16) {
 
-					__m256 b_vec= _mm256_load_ps(&at(B, k, n)); // ps-> packed single precision floating point. pd-> double. ph-> half
-					__m256 c_vec= _mm256_load_ps(&at(C, m, n));
+					// n + 0
+					__m256 b_vec0= _mm256_load_ps(&at(B, k, n)); // ps-> packed single precision floating point. pd-> double. ph-> half
+					__m256 c_vec0= _mm256_load_ps(&at(C, m, n));
 
 					// multiply krde
-					c_vec= _mm256_fmadd_ps(a_vec, b_vec, c_vec);
+					c_vec0= _mm256_fmadd_ps(a_vec, b_vec0, c_vec0);
 
-					_mm256_store_ps(&at(C, m, n), c_vec);
+					_mm256_store_ps(&at(C, m, n), c_vec0);
 
+					// n + 8
+					__m256 b_vec1= _mm256_load_ps(&at(B, k, n + 8)); // ps-> packed single precision floating point. pd-> double. ph-> half
+					__m256 c_vec1= _mm256_load_ps(&at(C, m, n + 8));
+
+					// multiply krde
+					c_vec1= _mm256_fmadd_ps(a_vec, b_vec1, c_vec1);
+
+					_mm256_store_ps(&at(C, m, n + 8), c_vec1);
 				}
 			}
 		}
