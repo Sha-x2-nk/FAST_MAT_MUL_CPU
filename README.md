@@ -1,35 +1,54 @@
 # FAST_MAT_MUL_CPU
-RAM RAM
+## INTRODUCTION
+This project focuses on implementing various kernels for matrix multiplication on the CPU. Each kernel is designed to perform a specific optimization to improve the overall performance of matrix multiplication operations. For simplicity, we assumed the matrix be a square matrix of size 4096 x 4096.
 
-### BELOW ARE RESULTS SUMMARISED
+## KERNELS AND RUNTIME
 
 | PROCESSOR | PLATFORM |
 |--|--|
 Intel Core i7-12650H | WINDOWS 11 |
 
 
-| KERNEL | RUNTIME | relative speedup | absolute speedup
+NUM FLOP(s) = 2 * N^3 = 2 * (4096 * 4096 * 4096) = 137.44 GFLOPS
+
+
+| KERNEL | GFLOPs | relative speedup | absolute speedup
 |--------|---------|--| -- |
-| LVL1. NAIVE MATMUL| 928 seconds | 1 | 1 |
-| LVL2. CACHE AWARE LOOP REARRANGEMENT | 113 seconds | 8.2x | 8.2x |
-| LVL3. COMPILER CHANGE TO ICPX & -O3 | 13.623 seconds | 8.29x | 68.12x |
-| LVL4. PARALLEL FOR LOOP USING TBB | 2.285 seconds | 5.96x | 406.1x |
-| LVL5. TILING | 1.583 seconds | 1.443x | 586.2x |
-| LVL6. PARALLEL RECURSION | 1.293 seconds | 1.2x | 717.7x |
-| LVL7. COMPILER FLAGS fastmath, arch=native | 0.5 seconds | 2.58x | 1856x |
-| LVL8. HARD CODED AVX2 INTRINSICS | 0.41 seconds |  1.21x |  2263x |
-| numpy openBLAS | 0.25 seconds | - | - |
-
-All the kernels are in matMulCPU.h header file.
+| LVL1. NAIVE MATMUL| 0.14 | 1 | 1 |
+| LVL2. CACHE AWARE LOOP REARRANGEMENT | 1.21 | 8.2x | 8.2x |
+| LVL3. COMPILER CHANGE TO ICPX & -O3 | 10.08 | 8.29x | 68.12x |
+| LVL4. PARALLEL FOR LOOP USING TBB | 60.14 | 5.96x | 406.1x |
+| LVL5. TILING | 86.82 | 1.443x | 586.2x |
+| LVL6. PARALLEL DIVIDE AND CONQUER | 106.29 | 1.2x | 717.7x |
+| LVL7. COMPILER FLAGS fastmath, arch=native | 274.88 | 2.58x | 1856x |
+| LVL8. HARD CODED AVX2 INTRINSICS | 335.21 |  1.21x |  2263x |
+| numpy openBLAS | 549.76 | - | - |
 
 
-the first 2 kernels were compiled with MSVC.
+### CODE STRUCTURE
+
+All the kernels are in the form of template functions in src/kernelsCPU.h file.
+
+Benchmarking code in src/matMulCPU.cpp file.
+
+### USAGE
+Since we've used tbb, environment variables for Intel OneAPI will have to be set, and tbb will have to linked.
+
+First 2 kernels have been compiled with MSVC.
+
+<code>cl.exe matMulCPU.cpp -ltbb </code> 
+
+Next kernels (till LVL 6) are compiled with Intel C++ compiler.
+
+<code>icpx matMulCPU.cpp -o main.exe -ltbb</code>
+
+LVL 7,8 kernels are compiled with additional compiler flags.
+
+<code>icpx matMulCPU.cpp -o main.exe -ltbb -march=native -ffast-math</code>
 
 
-I did this as a hobby project so the code lacks peoper benchmarking. All the runtimes mentioned here are a minimum of 4-5 code running iterations. The LVL 8 optimisation should work better on AVX-512 supported processors. (like 11th gen Intel Core)
+### ACKNOWLEDGEMENTS
+We acknowledge the following resources and references that helped in developing and optimizing the matrix multiplication kernels:
 
-
-The code is heavily inspired from <b><u>Charles Leiserson's</u></b> lecture on MIT OCW performance engineering. 
-
-
-ANY NEW BENCHMARKS/IMPROVEMENTS ARE WELCOME.
+- Charles Leiserson's lecture on MIT OCW performance engineering. 
+- https://www.youtube.com/watch?v=eweD5_mV7h4 - for divide and conquer matMul
