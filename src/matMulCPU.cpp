@@ -56,23 +56,23 @@ void benchTimes(T *A, T *B, T *C, int idx, int iters){
 				t0 = std::chrono::high_resolution_clock::now(); 
 				matMul5<float, MAT_SIZE, 64>(A, B, C);           
 				t1 = std::chrono::high_resolution_clock::now(); 
-				break; // 64 best aya
+				break; // 64 best
 			case 6: 
 				t0 = std::chrono::high_resolution_clock::now(); 
 				matMul6<float, MAT_SIZE, 64>(A, B, C, MAT_SIZE); 
 				t1 = std::chrono::high_resolution_clock::now(); 
-				break; // 64 best aya
+				break; // 64 best
 			case 8: 
 				t0 = std::chrono::high_resolution_clock::now(); 
 				matMul8<float, MAT_SIZE, 64>(A, B, C, MAT_SIZE); 
 				t1 = std::chrono::high_resolution_clock::now(); 
-				break; // 64 best aya
+				break; // 64 best
 		}
 		fs = t1 - t0;
 		totfs+= fs;
 		// result checking
 		if( checkC<float, MAT_SIZE>(C)== false ){ printf("\nINCORRECT RESULT."); return; }
-		initMat<float, MAT_SIZE>(C, 0); // reset kia 0. kyunki C += ho rha h. nhi kia to wrong ans ayega
+		initMat<float, MAT_SIZE>(C, 0); // reset C
 	}
 	printf("\nRESULTS CORRECT. ");
 	totfs/= iters;
