@@ -1,4 +1,4 @@
-# FAST_MAT_MUL_CPU
+# Optimising matrix multiplication on CPUs
 ## INTRODUCTION
 This project focuses on implementing various kernels for matrix multiplication on the CPU. Each kernel is designed to perform a specific optimization to improve the overall performance of matrix multiplication operations. For simplicity, we assumed the matrix be a square matrix of size 4096 x 4096.
 
