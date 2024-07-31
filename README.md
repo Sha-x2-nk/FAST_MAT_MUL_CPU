@@ -9,10 +9,10 @@ This project focuses on implementing various kernels for matrix multiplication o
 Intel Core i7-12650H | WINDOWS 11 |
 
 
-NUM FLOP(s) = 2 * N^3 = 2 * (4096 * 4096 * 4096) = 137.44 GFLOPS
+NUM FLOP(s) = 2 * N^3 = 2 * (4096 * 4096 * 4096) = 137.44 GFLOP(s)
 
 
-| KERNEL | GFLOPs | relative speedup | absolute speedup
+| KERNEL | GFLOPS | relative speedup | absolute speedup
 |--------|---------|--| -- |
 | LVL1. NAIVE MATMUL| 0.14 | 1 | 1 |
 | LVL2. CACHE AWARE LOOP REARRANGEMENT | 1.21 | 8.2x | 8.2x |
